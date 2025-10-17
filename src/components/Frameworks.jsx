@@ -8,7 +8,7 @@ export function Frameworks() {
     "csharp",
     "css3",
     "dotnet",
-    "dotnetcore",
+    "nodejs1",
     "git",
     "html5",
     "javascript",
