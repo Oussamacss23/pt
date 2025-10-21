@@ -1,15 +1,15 @@
 // Simple fallback responses for common questions
 const FALLBACK_RESPONSES = {
-    skills: "I specialize in full-stack development with React, Blazor WebAssembly, ASP.NET Core, C#, and modern web technologies. I have experience with databases like SQLite and SQL Server, plus authentication systems like Auth0.",
-    projects: "I've built several key projects: an e-commerce platform with ASP.NET Core, an authentication system with Auth0 and React, and a Blazor WebAssembly SPA. Each showcases different aspects of modern web development.",
-    experience: "I'm a Full Stack Developer focused on the .NET ecosystem, with expertise in building secure, scalable web applications and strong experience in authentication systems and responsive design.",
+    skills: "I specialize in full-stack development with React, Node.js, Express, and modern web technologies. I have experience with databases like PostgreSQL and MongoDB, plus authentication systems like Auth0 and modern JavaScript/TypeScript development.",
+    projects: "I've built several key projects: dynamic web applications with React and Node.js, authentication systems with Auth0, and responsive SPAs with modern JavaScript frameworks. Each showcases different aspects of modern web development and security tools.",
+    experience: "I'm a Full Stack Developer focused on the JavaScript ecosystem, with expertise in building secure, scalable web applications using React, Node.js, and modern web technologies. I have strong experience in frontend development and security tools.",
     contact: "Thanks for your interest! Please use the contact form on this website to reach out directly. I'd love to discuss potential opportunities or answer any specific questions about my work.",
-    default: "Thanks for visiting my portfolio! I'm a full-stack developer specializing in .NET technologies. Feel free to explore my projects or use the contact form to get in touch."
+    default: "Thanks for visiting my portfolio! I'm a full-stack developer specializing in JavaScript technologies and modern web development. Feel free to explore my projects or use the contact form to get in touch."
 };
 
 function getFallbackResponse(prompt) {
     const lowercasePrompt = prompt.toLowerCase();
-    
+
     if (lowercasePrompt.includes('skill') || lowercasePrompt.includes('technology') || lowercasePrompt.includes('tech stack')) {
         return FALLBACK_RESPONSES.skills;
     }
@@ -22,7 +22,7 @@ function getFallbackResponse(prompt) {
     if (lowercasePrompt.includes('contact') || lowercasePrompt.includes('hire') || lowercasePrompt.includes('email')) {
         return FALLBACK_RESPONSES.contact;
     }
-    
+
     return FALLBACK_RESPONSES.default;
 }
 
@@ -35,11 +35,11 @@ function checkRateLimit(ip) {
     const now = Date.now();
     const userRequests = requestLog.get(ip) || [];
     const recentRequests = userRequests.filter(time => (now - time) < RATE_LIMIT_WINDOW);
-    
+
     if (recentRequests.length >= MAX_REQUESTS_PER_WINDOW) {
         return false;
     }
-    
+
     recentRequests.push(now);
     requestLog.set(ip, recentRequests);
     return true;
@@ -69,13 +69,13 @@ export default async function handler(req, res) {
     }
 
     const prompt = req.body.prompt || req.body.input || '';
-    
+
     if (!prompt) {
         return res.status(400).json({ error: 'Missing prompt in request body' });
     }
 
     const fallbackText = getFallbackResponse(prompt);
-    res.status(200).json({ 
+    res.status(200).json({
         text: fallbackText,
         fallback: true,
         message: 'Basic chat response (AI service unavailable)'
